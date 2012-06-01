@@ -20,6 +20,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "daemons"
   gem.add_runtime_dependency "em-proxy"
   gem.add_runtime_dependency "ansi"
-  gem.add_runtime_dependency "rack"
   gem.add_development_dependency "rake"
 end
