@@ -17,6 +17,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Baransa::VERSION
 
+  gem.add_runtime_dependency "daemons"
   gem.add_runtime_dependency "em-proxy"
   gem.add_runtime_dependency "ansi"
   gem.add_runtime_dependency "rack"

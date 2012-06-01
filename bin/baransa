@@ -1,4 +1,17 @@
 #!/usr/bin/env ruby
 require 'daemons'
 
-Daemons.run('baransa_server')
+$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+require 'baransa'
+
+Daemons.run_proc('baransa_server') do
+  class Proxy
+    def self.stop
+      puts ANSI::Code.bold { "\nTerminating proxy" }
+      EventMachine.stop
+    end
+  end
+
+  # Start proxy
+  Baransa::Server.run
+end
