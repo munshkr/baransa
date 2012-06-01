@@ -1,6 +1,6 @@
 # バランサ
 
-Baransa is a proxy load balancer and limiter written in Ruby.
+Baransa is a forward proxy with load balancer and limiter written in Ruby.
 
 ## Installation
 
