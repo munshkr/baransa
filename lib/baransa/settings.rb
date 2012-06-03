@@ -1,14 +1,6 @@
 require 'optparse'
 require 'yaml'
-
-class Hash
-  def symbolize_keys
-    inject({}) do |options, (key, value)|
-      options[(key.to_sym rescue key) || key] = value
-    options
-    end
-  end
-end
+require 'ext/hash'
 
 module Baransa
   module Settings
@@ -21,7 +13,7 @@ module Baransa
 
     def load_file!(path)
       file_settings = YAML::load_file(path).symbolize_keys
-      deep_merge!(@_settings, file_settings)
+      @_settings.deep_merge!(file_settings)
     end
 
     def parse_argv!(argv=ARGV)
@@ -43,15 +35,7 @@ module Baransa
       end
 
       # Finally, merge additional supplied settings
-      deep_merge!(@_settings, argv_settings)
-    end
-
-    # Deep merging of hashes
-    # deep_merge by Stefan Rusterholz, see http://www.ruby-forum.com/topic/142809
-    def deep_merge!(target, data)
-      merger = proc { |key, v1, v2|
-        Hash === v1 && Hash === v2 ? v1.merge(v2, &merger) : v2 }
-        target.merge! data, &merger
+      @_settings.deep_merge!(argv_settings)
     end
 
     def method_missing(name, *args, &block)
