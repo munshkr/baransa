@@ -43,7 +43,7 @@ module Baransa
     # List of backends
     #
     def self.list
-      @list ||= BACKENDS.map { |backend| new backend }
+      @list ||= Settings.backends.map { |backend| new backend }
     end
 
     # Return balancing strategy

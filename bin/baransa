@@ -1,17 +1,25 @@
 #!/usr/bin/env ruby
 require 'daemons'
+require 'optparse'
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'baransa'
 
-Daemons.run_proc('baransa_server') do
-  class Proxy
-    def self.stop
-      puts ANSI::Code.bold { "\nTerminating proxy" }
-      EventMachine.stop
-    end
-  end
+##
+# Parse application options from command line
+#
 
-  # Start proxy
+# Ignore arguments that appear before a double-dash argument
+app_argv = ARGV
+if separator = app_argv.index('--')
+  app_argv = app_argv[separator + 1 .. -1]
+end
+
+Baransa::Settings.parse_argv!(app_argv)
+
+##
+# Run Baransa::Server as a daemon
+#
+Daemons.run_proc('baransa') do
   Baransa::Server.run
 end

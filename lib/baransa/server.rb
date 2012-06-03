@@ -4,7 +4,10 @@ module Baransa
   # Wrapping the proxy server
   #
   module Server
-    def run(host='0.0.0.0', port=9999)
+    def run(options={})
+      host = options[:host] || Settings.address
+      port = options[:port] || Settings.port
+
       puts ANSI::Code.bold { "Launching proxy at #{host}:#{port}...\n" }
 
       Proxy.start(:host => host, :port => port, :debug => false) do |conn|
@@ -22,5 +25,14 @@ module Baransa
     end
 
     module_function :run
+  end
+end
+
+# `em-proxy` prints to stdout when stopping the reactor.
+# This replaces the "puts" line with logger.
+class Proxy
+  def self.stop
+    puts ANSI::Code.bold { "\nTerminating proxy" }
+    EventMachine.stop
   end
 end
